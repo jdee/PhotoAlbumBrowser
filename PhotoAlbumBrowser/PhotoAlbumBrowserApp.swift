@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct PhotoAlbumBrowserApp: App {
+    @StateObject private var photoManager = PhotoManager(loadImmediately: true)
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                GeometryReader { geometry in
+                    ContentView()
+                        .environmentObject(photoManager)
+                        .navigationBarHidden(geometry.size.isLandscape)
+                        .statusBar(hidden: geometry.size.isLandscape)
+                }
+            }
         }
     }
 }
