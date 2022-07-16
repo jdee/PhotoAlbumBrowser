@@ -37,6 +37,11 @@ struct AssetInfo {
     var locationName = ""
 
     /**
+     Whether the text overlay is currently shown.
+     */
+    var isOverlayVisible = true
+
+    /**
      The local file: URL for the image. Used to determine file type and encoding.
      */
     var url: URL? {

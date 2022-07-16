@@ -10,7 +10,6 @@ import SwiftUI
 struct PhotoCell: View {
     @Binding var assetInfo: AssetInfo
     var size: CGSize
-    @State private var showOverlay = true
 
     private var formatter: DateFormatter {
         let formatter = DateFormatter()
@@ -101,13 +100,8 @@ struct PhotoCell: View {
                     systemImageName: badgeImageName
                 )
                 .frame(width: size.width)
-                .opacity(showOverlay ? 1 : 0)
+                .opacity(assetInfo.isOverlayVisible ? 1 : 0)
                 .transition(.opacity)
-            }
-        }
-        .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.4)) {
-                showOverlay.toggle()
             }
         }
     }
@@ -115,7 +109,6 @@ struct PhotoCell: View {
 
 struct PhotoCell_Previews: PreviewProvider {
     static var previews: some View {
-        let assetInfo = AssetInfo()
-        PhotoCell(assetInfo: .constant(assetInfo), size: CGSize(width: 200, height: 200))
+        PhotoCell(assetInfo: .constant(AssetInfo()), size: CGSize(width: 200, height: 200))
     }
 }

@@ -11,22 +11,36 @@ struct PhotoList: View {
     @Binding var assets: [AssetInfo]
     @Binding var albumName: String
 
+    private func resetOverlays() {
+        for i in 0..<assets.count {
+            assets[i].isOverlayVisible = true
+        }
+    }
+
     // Generates the size using the specified width from the GeometryReader
     // and the aspect ratio from the corresponding PHAsset.
-    private func cellSize(width: CGFloat, asset: AssetInfo) -> CGSize {
-        CGSize(width: width, height: width * (CGFloat(asset.asset.pixelHeight) / CGFloat(asset.asset.pixelWidth)))
+    private func cellSize(width: CGFloat, assetInfo: AssetInfo) -> CGSize {
+        CGSize(width: width, height: width * (CGFloat(assetInfo.asset.pixelHeight) / CGFloat(assetInfo.asset.pixelWidth)))
     }
 
     var body: some View {
         GeometryReader { geometry in
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
-                    ForEach(0..<assets.count, id: \.self) { index in
+                    ForEach(assets.indices, id: \.self) { index in
                         PhotoCell(
                             assetInfo: $assets[index],
-                            size: cellSize(width: geometry.size.width, asset: assets[index])
+                            size: cellSize(
+                                width: geometry.size.width,
+                                assetInfo: assets[index]
+                            )
                         )
                         .id(index)
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                assets[index].isOverlayVisible.toggle()
+                            }
+                        }
                     }
                 }
                 .toolbar {
@@ -36,6 +50,7 @@ struct PhotoList: View {
                             Button {
                                 withAnimation {
                                     proxy.scrollTo(0)
+                                    resetOverlays()
                                 }
                             } label: {
                                 Text(albumName)
