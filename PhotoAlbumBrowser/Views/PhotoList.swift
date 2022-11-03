@@ -27,18 +27,20 @@ struct PhotoList: View {
         GeometryReader { geometry in
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
-                    ForEach(assets.indices, id: \.self) { index in
-                        PhotoCell(
-                            assetInfo: $assets[index],
-                            size: cellSize(
-                                width: geometry.size.width,
-                                assetInfo: assets[index]
+                    LazyVStack {
+                        ForEach(assets.indices, id: \.self) { index in
+                            PhotoCell(
+                                assetInfo: $assets[index],
+                                size: cellSize(
+                                    width: geometry.size.width,
+                                    assetInfo: assets[index]
+                                )
                             )
-                        )
-                        .id(index)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                assets[index].isOverlayVisible.toggle()
+                            .id(index)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.4)) {
+                                    assets[index].isOverlayVisible.toggle()
+                                }
                             }
                         }
                     }
