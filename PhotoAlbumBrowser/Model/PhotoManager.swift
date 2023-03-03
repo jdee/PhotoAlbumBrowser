@@ -14,6 +14,8 @@ final class PhotoManager: ObservableObject {
     @Published var isLoaded = false
     @Published var assets = [AssetInfo]()
 
+    var geolocationCache = [GeolocationCoordinate: String]()
+
     init(loadImmediately: Bool = false) {
         if loadImmediately {
             load()
@@ -88,6 +90,7 @@ final class PhotoManager: ObservableObject {
                 // now get all the PHAssets for still images in the PHAssetCollection
                 let assetOptions = PHFetchOptions()
                 assetOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+                assetOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
                 let assetResult = PHAsset.fetchAssets(in: collection, options: assetOptions)
                 print("Found \(assetResult.count) assets in \(collection.localizedTitle ?? "unknown") album")
