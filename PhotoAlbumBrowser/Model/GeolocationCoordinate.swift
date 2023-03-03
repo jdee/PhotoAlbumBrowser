@@ -72,7 +72,7 @@ struct GeolocationCoordinate: Hashable {
 
     /// Number of latitudinal intervals in a hemisphere. Results in square regions at the equator.
     /// Aspect ratio is the square of the secant of latitude. The ratio of the total longitudinal interval
-    /// count in 2π to the total latitudianl interval count in π is π.
+    /// count in 2π to the total latitudinal interval count in π is π.
     private static let NumLatitudinalIntervals = DegreesPerRadian / GridSizeDegrees
 
     /// Rounds the ``latitude`` argument in intervals of equal axial distance, resulting in regions of equal area
